@@ -1,4 +1,4 @@
-name: X86_64 Mini Official
+name: X86_64 Full ImmortalWrt
 
 on:
   workflow_dispatch:
@@ -6,19 +6,19 @@ on:
   #   - cron: 0 22 * * *
 
 env:
-  REPO_URL: https://github.com/openwrt/openwrt
-  REPO_BRANCH: openwrt-25.12
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
+  REPO_BRANCH: master
   DIY_FEEDS: diy-feeds.sh
-  DIY_MINI: diy-mini.sh
-  CONFIG_MINI: configs/x86_64-official-mini.config
+  DIY_FULL: diy-full.sh
+  CONFIG_FULL: configs/x86_64-immortalWrt.config
   INIT_SCRIPT: patch/init-settings.sh
-  PATCH_FILE: patch/patch.sh
+  PATCH_SCRIPT: patch/patch.sh
   MAKE_SCRIPT: scripts/retry-make-nproc.sh
   DOWNLOAD_SCRIPT: scripts/retry-make-download.sh
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: X86_64_Full_Official
+  FIRMWARE_TAG: X86_64_Full_ImmortalWrt
   TZ: Asia/Shanghai
 
 jobs:
@@ -123,9 +123,8 @@ jobs:
         chmod +x $GITHUB_WORKSPACE/patch/*
         chmod +x $GITHUB_WORKSPACE/diy-*.sh
         df -hT $GITHUB_WORKSPACE
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone -b $REPO_BRANCH --single-branch --filter=blob:none $REPO_URL openwrt
         cd openwrt
-        cp -r $GITHUB_WORKSPACE/lean package/lean
         echo "OPENWRT_PATH=$PWD" >> $GITHUB_ENV
         COMMIT_AUTHOR=$(git show -s --date=short --format="作者: %an")
         echo "COMMIT_AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_ENV
@@ -138,7 +137,7 @@ jobs:
 
     - name: 生成变量
       run: |
-        cp $CONFIG_MINI $OPENWRT_PATH/.config
+        cp $CONFIG_FULL $OPENWRT_PATH/.config
         cd $OPENWRT_PATH
         make defconfig > /dev/null 2>&1
         SOURCE_REPO="$(echo $REPO_URL | awk -F '/' '{print $(NF)}')"
@@ -147,7 +146,6 @@ jobs:
         echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
         DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
         echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
-        # 使用 grep 查找 CONFIG_USE_APK=y 配置
         if grep -q "^CONFIG_USE_APK=y$" .config; then
             echo "USE_APK=true" >> $GITHUB_ENV
         else
@@ -162,24 +160,21 @@ jobs:
         mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
         prefix: ${{ env.OPENWRT_PATH }}
 
-    - name: 加载Patch
-      run: |
-        cd $OPENWRT_PAT
-        $GITHUB_WORKSPACE/patch/update_eth.sh
-    - name: 安装Feed
+    - name: 安装 Feed 并加载 Patch
       run: |
         cd $OPENWRT_PATH
+        $GITHUB_WORKSPACE/patch/update_eth.sh
         $GITHUB_WORKSPACE/$DIY_FEEDS
         ./scripts/feeds update -a
-        $GITHUB_WORKSPACE/$PATCH_FILE
+        # $GITHUB_WORKSPACE/$PATCH_SCRIPT
         ./scripts/feeds install -a
 
     - name: 加载自定义配置
       run: |
         [ -e files ] && mv files $OPENWRT_PATH/files
-        [ -e $CONFIG_MINI ] && mv $CONFIG_MINI $OPENWRT_PATH/.config
+        [ -e $CONFIG_FULL ] && mv $CONFIG_FULL $OPENWRT_PATH/.config
         cd $OPENWRT_PATH
-        $GITHUB_WORKSPACE/$DIY_MINI
+        $GITHUB_WORKSPACE/$DIY_FULL
     - name: 下载依赖
       run: |
         cd $OPENWRT_PATH
@@ -224,7 +219,7 @@ jobs:
         fi
         tar -zcf Packages.tar.gz packages
         rm -rf packages feeds.buildinfo version.buildinfo
-        echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
+        echo "KERNEL=$(jq -r '.linux_kernel.version // "unknown"' profiles.json)" >> $GITHUB_ENV
         echo "FIRMWARE_PATH=$PWD" >> $GITHUB_ENV
 
     - name: 上传固件至 Artifact
