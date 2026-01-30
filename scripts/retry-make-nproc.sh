@@ -19,12 +19,9 @@ while true; do
     echo
     echo "第 $attempt 次尝试... $(date)"
 
-    # 执行命令并将输出同时保存到变量和显示到终端
-    output=$(eval "$COMMAND" 2>&1)
-    exit_code=$?
-    
-    # 显示输出
-    echo "$output"
+    # 执行命令并实时输出，同时保存输出到变量以备错误分析
+    output=$(eval "$COMMAND" 2>&1 | tee /dev/tty)
+    exit_code=${PIPESTATUS[0]}
     
     # 如果命令退出码不为0，则视为失败
     if [ $exit_code -ne 0 ]; then
