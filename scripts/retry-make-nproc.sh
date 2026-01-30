@@ -20,7 +20,8 @@ while true; do
     echo "第 $attempt 次尝试... $(date)"
 
     # 执行命令并实时输出，同时保存输出到变量以备错误分析
-    output=$(eval "$COMMAND" 2>&1 | tee /dev/tty)
+    # 使用更通用的方式实现实时输出，避免在某些Ubuntu系统中出现"/dev/tty: No such device or address"错误
+    output=$(eval "$COMMAND" 2>&1 | tee /dev/stderr)
     exit_code=${PIPESTATUS[0]}
     
     # 如果命令退出码不为0，则视为失败
