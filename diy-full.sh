@@ -33,7 +33,7 @@ cp -f $GITHUB_WORKSPACE/images/background.jpg feeds/luci/themes/luci-theme-argon
 echo "当前工作流: $GITHUB_WORKFLOW"
 
 # 如果当前 action 为 LEDE
-if [[ $GITHUB_WORKFLOW != *"LEDE"* ]]; then
+if [[ $GITHUB_WORKFLOW == *"LEDE"* ]]; then
   # 修改版本为编译日期
   date_version=$(date +"%y.%m.%d")
   orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
