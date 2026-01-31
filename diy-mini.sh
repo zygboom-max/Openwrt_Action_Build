@@ -41,7 +41,7 @@ if [[ $GITHUB_WORKFLOW == *"LEDE"* ]]; then
 fi
 
 # 如果当前 action 为 immortalwrt
-if [[ $GITHUB_WORKFLOW == *"immortalWrt"* ]]; then
+if [[ $GITHUB_WORKFLOW == *"ImmortalWrt"* ]]; then
   # 执行 scripts/update-default.sh 脚本
   $GITHUB_WORKSPACE/scripts/update-emortal.sh
   ## AdGuardHome
