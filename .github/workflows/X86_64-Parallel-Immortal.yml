@@ -143,7 +143,7 @@ jobs:
       max-parallel: 2
       fail-fast: false
 
-    name: 编译 ${{ matrix.build_type }} 版本固件
+    name: 编译 immortalWrt ${{ matrix.build_type }} 版本固件
 
     steps:
       - name: 释放磁盘空间
