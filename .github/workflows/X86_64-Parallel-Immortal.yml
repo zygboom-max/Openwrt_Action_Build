@@ -215,30 +215,39 @@ jobs:
           echo "FIRMWARE_PATH=$PWD" >> $GITHUB_ENV
           echo "BUILD_TYPE=${{ matrix.build_type }}" >> $GITHUB_ENV
 
-      - name: 上传固件至 Artifact
-        if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE != 'true'
-        uses: actions/upload-artifact@main
-        with:
-          name: ${{ env.SOURCE_REPO }}-firmware-${{ matrix.build_type }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
-          path: ${{ env.FIRMWARE_PATH }}
-
       - name: 保存固件至临时目录 (区分版本命名)
         if: steps.compile.outputs.status == 'success'
         run: |
+          echo "FIRMWARE_PATH: ${{ env.FIRMWARE_PATH }}"
+          echo "检查源目录内容:"
+          ls -lah ${{ env.FIRMWARE_PATH }} || echo "源目录不存在"
+          
           mkdir -p $GITHUB_WORKSPACE/firmware/${{ matrix.build_type }}
-          cd ${{ env.FIRMWARE_PATH }}
-          for file in *; do
-            if [ -f "$file" ]; then
-              cp "$file" "$GITHUB_WORKSPACE/firmware/${{ matrix.build_type }}/${{ matrix.build_type }}_$file"
-            fi
-          done
+          if [ -d "${{ env.FIRMWARE_PATH }}" ]; then
+            cd ${{ env.FIRMWARE_PATH }}
+            count=0
+            for file in *; do
+              if [ -f "$file" ]; then
+                mv "$file" "$GITHUB_WORKSPACE/firmware/${{ matrix.build_type }}/${{ matrix.build_type }}_$file"
+                count=$((count+1))
+                echo "已移动: $file"
+              fi
+            done
+            echo "共移动 $count 个文件"
+          else
+            echo "错误: FIRMWARE_PATH 目录不存在"
+            exit 1
+          fi
+          
+          echo "目标目录内容:"
+          ls -lah $GITHUB_WORKSPACE/firmware/${{ matrix.build_type }} || echo "目标目录为空"
 
       - name: 上传固件至 Artifact (用于多 Job 间传输)
         if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
         uses: actions/upload-artifact@main
         with:
           name: firmware-${{ matrix.build_type }}
-          path: $GITHUB_WORKSPACE/firmware/${{ matrix.build_type }}/
+          path: $GITHUB_WORKSPACE/firmware/${{ matrix.build_type }}
           retention-days: 1
 
   Release:
