@@ -125,6 +125,7 @@ jobs:
           else
               echo "USE_APK=false" >> $GITHUB_ENV
           fi
+          mkdir -p $OPENWRT_PATH/bin/targets/x86/64
 
 
 
