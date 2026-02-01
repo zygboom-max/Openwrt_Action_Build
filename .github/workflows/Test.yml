@@ -126,14 +126,6 @@ jobs:
               echo "USE_APK=false" >> $GITHUB_ENV
           fi
 
-      - name: 缓存工具链
-        if: env.CACHE_TOOLCHAIN == 'true'
-        uses: HiGarfield/cachewrtbuild@main
-        with:
-          ccache: false
-          mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ matrix.build_type }}
-          prefix: ${{ env.OPENWRT_PATH }}
-
 
 
 
@@ -142,7 +134,6 @@ jobs:
         run: df -hT
 
       - name: 整理 ${{ matrix.build_type }} 版本固件
-        if: steps.compile.outputs.status == 'success'
         run: |
           cd $OPENWRT_PATH/bin/targets/*/*
           touch sha256sums
@@ -156,7 +147,6 @@ jobs:
           echo "BUILD_TYPE=${{ matrix.build_type }}" >> $GITHUB_ENV
 
       - name: 保存固件至临时目录 (区分版本命名)
-        if: steps.compile.outputs.status == 'success'
         run: |
           echo "FIRMWARE_PATH: ${{ env.FIRMWARE_PATH }}"
           echo "检查源目录内容:"
@@ -183,7 +173,6 @@ jobs:
           ls -lah $GITHUB_WORKSPACE/firmware/${{ matrix.build_type }} || echo "目标目录为空"
 
       - name: 上传固件至 Artifact (用于多 Job 间传输)
-        if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
         uses: actions/upload-artifact@main
         with:
           name: firmware-${{ matrix.build_type }}
