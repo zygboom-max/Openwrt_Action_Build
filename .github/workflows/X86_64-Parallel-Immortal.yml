@@ -50,9 +50,6 @@ jobs:
       - name: 克隆并获取源码信息
         id: git_info
         run: |
-          chmod +x $GITHUB_WORKSPACE/scripts/*.sh
-          chmod +x $GITHUB_WORKSPACE/patch/*.sh
-          chmod +x $GITHUB_WORKSPACE/diy-*.sh
           df -hT $GITHUB_WORKSPACE
           git clone -b $REPO_BRANCH --single-branch --filter=blob:none $REPO_URL openwrt
           cd openwrt
