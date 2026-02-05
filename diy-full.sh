@@ -31,19 +31,19 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-netspeedtest.git packag
 cp -f $GITHUB_WORKSPACE/images/background.jpg feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
 
 echo "当前工作流: $GITHUB_WORKFLOW"
+echo "源码仓库: ${SOURCE_REPO:-未设置}"
 
-# 如果当前 action 为 LEDE
-if [[ $GITHUB_WORKFLOW == *"LEDE"* ]]; then
+# 检测源码类型（优先使用 SOURCE_REPO 环境变量）
+if [[ "${SOURCE_REPO:-}" == *"lede"* ]]; then
+  # LEDE 源码
   # 修改版本为编译日期
   date_version=$(date +"%y.%m.%d")
   orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
   sed -i "s/${orig_version}/R${date_version} by billyJR/g" package/lean/default-settings/files/zzz-default-settings
   echo "成功更新版本信息为: R${date_version}"
-fi
-
-# 如果当前 action 为 immortalwrt
-if [[ $GITHUB_WORKFLOW == *"ImmortalWrt"* ]]; then
-  # 执行 scripts/update-default.sh 脚本
+elif [[ "${SOURCE_REPO:-}" == *"immortalwrt"* ]]; then
+  # ImmortalWrt 源码
+  # 执行 scripts/update-emortal.sh 脚本
   $GITHUB_WORKSPACE/scripts/update-emortal.sh
   ## AdGuardHome
   echo "正在添加 AdGuardHome..."
@@ -51,4 +51,24 @@ if [[ $GITHUB_WORKFLOW == *"ImmortalWrt"* ]]; then
   ## mosdns
   find ./ | grep Makefile | grep mosdns | xargs rm -f
   git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+else
+  # 回退到基于 GITHUB_WORKFLOW 的检测（兼容旧工作流）
+  if [[ $GITHUB_WORKFLOW == *"LEDE"* ]]; then
+    # 修改版本为编译日期
+    date_version=$(date +"%y.%m.%d")
+    orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
+    sed -i "s/${orig_version}/R${date_version} by billyJR/g" package/lean/default-settings/files/zzz-default-settings
+    echo "成功更新版本信息为: R${date_version}"
+  fi
+
+  if [[ $GITHUB_WORKFLOW == *"ImmortalWrt"* ]]; then
+    # 执行 scripts/update-default.sh 脚本
+    $GITHUB_WORKSPACE/scripts/update-emortal.sh
+    ## AdGuardHome
+    echo "正在添加 AdGuardHome..."
+    git_sparse_clone openwrt-23.05 https://github.com/coolsnowwolf/luci applications/luci-app-adguardhome
+    ## mosdns
+    find ./ | grep Makefile | grep mosdns | xargs rm -f
+    git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+  fi
 fi
