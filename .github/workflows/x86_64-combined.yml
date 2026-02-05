@@ -299,12 +299,14 @@ jobs:
           fi
 
       - name: 下载 Full 版本固件
+        if: github.event.inputs.build_type == 'both' || github.event.inputs.build_type == 'Full'
         uses: actions/download-artifact@main
         with:
           name: firmware-lede-Full
           path: ./firmware-all
 
       - name: 下载 Mini 版本固件
+        if: github.event.inputs.build_type == 'both' || github.event.inputs.build_type == 'Mini'
         uses: actions/download-artifact@main
         with:
           name: firmware-lede-Mini
@@ -315,10 +317,24 @@ jobs:
           cd $GITHUB_WORKSPACE/firmware-all
           ls -lah
           echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
-          echo "FULL_KERNEL_VERSION=$(grep "^kernel " Full_openwrt-x86-64-generic.manifest | awk '{split($3, a, "-"); print a[1]"-"a[2]}')" >> $GITHUB_ENV
-          echo "MINI_KERNEL_VERSION=$(grep "^kernel " Mini_openwrt-x86-64-generic.manifest | awk '{split($3, a, "-"); print a[1]"-"a[2]}')" >> $GITHUB_ENV
-          echo "MINI_FIRMWARE_VERSION=$(jq -r '.version_number // "unknown"' Mini_profiles.json)" >> $GITHUB_ENV
-          echo "FULL_FIRMWARE_VERSION=$(jq -r '.version_number // "unknown"' Full_profiles.json)" >> $GITHUB_ENV
+
+          # Full 版本信息
+          if [ -f "Full_openwrt-x86-64-generic.manifest" ] && [ -f "Full_profiles.json" ]; then
+            echo "FULL_KERNEL_VERSION=$(grep "^kernel " Full_openwrt-x86-64-generic.manifest | awk '{split($3, a, "-"); print a[1]"-"a[2]}')" >> $GITHUB_ENV
+            echo "FULL_FIRMWARE_VERSION=$(jq -r '.version_number // "unknown"' Full_profiles.json)" >> $GITHUB_ENV
+          else
+            echo "FULL_KERNEL_VERSION=未构建" >> $GITHUB_ENV
+            echo "FULL_FIRMWARE_VERSION=未构建" >> $GITHUB_ENV
+          fi
+
+          # Mini 版本信息
+          if [ -f "Mini_openwrt-x86-64-generic.manifest" ] && [ -f "Mini_profiles.json" ]; then
+            echo "MINI_KERNEL_VERSION=$(grep "^kernel " Mini_openwrt-x86-64-generic.manifest | awk '{split($3, a, "-"); print a[1]"-"a[2]}')" >> $GITHUB_ENV
+            echo "MINI_FIRMWARE_VERSION=$(jq -r '.version_number // "unknown"' Mini_profiles.json)" >> $GITHUB_ENV
+          else
+            echo "MINI_KERNEL_VERSION=未构建" >> $GITHUB_ENV
+            echo "MINI_FIRMWARE_VERSION=未构建" >> $GITHUB_ENV
+          fi
 
       - name: 发布固件至 Release (统一)
         uses: softprops/action-gh-release@v2
@@ -612,12 +628,14 @@ jobs:
           fi
 
       - name: 下载 Full 版本固件
+        if: github.event.inputs.build_type == 'both' || github.event.inputs.build_type == 'Full'
         uses: actions/download-artifact@main
         with:
           name: firmware-immortalwrt-Full
           path: ./firmware-all
 
       - name: 下载 Mini 版本固件
+        if: github.event.inputs.build_type == 'both' || github.event.inputs.build_type == 'Mini'
         uses: actions/download-artifact@main
         with:
           name: firmware-immortalwrt-Mini
@@ -628,10 +646,24 @@ jobs:
           cd $GITHUB_WORKSPACE/firmware-all
           ls -lah
           echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
-          echo "FULL_KERNEL_VERSION=$(jq -r '.linux_kernel.version // "unknown"' Full_profiles.json)" >> $GITHUB_ENV
-          echo "MINI_KERNEL_VERSION=$(jq -r '.linux_kernel.version // "unknown"' Mini_profiles.json)" >> $GITHUB_ENV
-          echo "MINI_FIRMWARE_VERSION=$(jq -r '.version_number // "unknown"' Mini_profiles.json)" >> $GITHUB_ENV
-          echo "FULL_FIRMWARE_VERSION=$(jq -r '.version_number // "unknown"' Full_profiles.json)" >> $GITHUB_ENV
+
+          # Full 版本信息
+          if [ -f "Full_profiles.json" ]; then
+            echo "FULL_KERNEL_VERSION=$(jq -r '.linux_kernel.version // "unknown"' Full_profiles.json)" >> $GITHUB_ENV
+            echo "FULL_FIRMWARE_VERSION=$(jq -r '.version_number // "unknown"' Full_profiles.json)" >> $GITHUB_ENV
+          else
+            echo "FULL_KERNEL_VERSION=未构建" >> $GITHUB_ENV
+            echo "FULL_FIRMWARE_VERSION=未构建" >> $GITHUB_ENV
+          fi
+
+          # Mini 版本信息
+          if [ -f "Mini_profiles.json" ]; then
+            echo "MINI_KERNEL_VERSION=$(jq -r '.linux_kernel.version // "unknown"' Mini_profiles.json)" >> $GITHUB_ENV
+            echo "MINI_FIRMWARE_VERSION=$(jq -r '.version_number // "unknown"' Mini_profiles.json)" >> $GITHUB_ENV
+          else
+            echo "MINI_KERNEL_VERSION=未构建" >> $GITHUB_ENV
+            echo "MINI_FIRMWARE_VERSION=未构建" >> $GITHUB_ENV
+          fi
 
       - name: 发布固件至 Release (统一)
         uses: softprops/action-gh-release@v2

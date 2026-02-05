@@ -73,7 +73,7 @@ cp -f $GITHUB_WORKSPACE/images/background.jpg feeds/luci/themes/luci-theme-argon
 echo "当前工作流: $GITHUB_WORKFLOW"
 echo "源码仓库: ${SOURCE_REPO:-未设置}"
 echo "当前目录: $(pwd)"
-echo "环境变量 DEBUG:"
+echo "环境变量:"
 echo "  SOURCE_REPO='${SOURCE_REPO:-}'"
 echo "  REPO_URL='${REPO_URL:-}'"
 

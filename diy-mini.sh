@@ -23,48 +23,48 @@ function git_sparse_clone() {
 # 检测源码类型
 function detect_source_type() {
   # 方法1: 使用 SOURCE_REPO 环境变量（优先级最高）
-  if [[ -n "${SOURCE_REPO:-}" ]]; then
-    if [[ "${SOURCE_REPO}" == *"lede"* ]]; then
+  if [[ -n "${env.SOURCE_REPO:-}" ]]; then
+    if [[ "${env.SOURCE_REPO}" == *"lede"* ]]; then
       echo "lede"
       return 0
-    elif [[ "${SOURCE_REPO}" == *"immortalwrt"* ]]; then
+    elif [[ "${env.SOURCE_REPO}" == *"immortalwrt"* ]]; then
       echo "immortalwrt"
       return 0
     fi
   fi
 
-  # 方法2: 检查 GITHUB_WORKFLOW 变量
-  if [[ -n "${GITHUB_WORKFLOW:-}" ]]; then
-    if [[ "${GITHUB_WORKFLOW}" == *"LEDE"* ]]; then
-      echo "lede"
-      return 0
-    elif [[ "${GITHUB_WORKFLOW}" == *"ImmortalWrt"* ]]; then
-      echo "immortalwrt"
-      return 0
-    fi
-  fi
+  # # 方法2: 检查 GITHUB_WORKFLOW 变量
+  # if [[ -n "${GITHUB_WORKFLOW:-}" ]]; then
+  #   if [[ "${GITHUB_WORKFLOW}" == *"LEDE"* ]]; then
+  #     echo "lede"
+  #     return 0
+  #   elif [[ "${GITHUB_WORKFLOW}" == *"ImmortalWrt"* ]]; then
+  #     echo "immortalwrt"
+  #     return 0
+  #   fi
+  # fi
 
-  # 方法3: 检查文件系统特征
-  if [[ -d "package/lean" ]]; then
-    echo "lede"
-    return 0
-  fi
+  # # 方法3: 检查文件系统特征
+  # if [[ -d "package/lean" ]]; then
+  #   echo "lede"
+  #   return 0
+  # fi
 
-  if [[ -d "package/emortal" ]]; then
-    echo "immortalwrt"
-    return 0
-  fi
+  # if [[ -d "package/emortal" ]]; then
+  #   echo "immortalwrt"
+  #   return 0
+  # fi
 
-  # 方法4: 检查 feeds.conf.default 中的源
-  if [[ -f "feeds.conf.default" ]]; then
-    if grep -q "coolsnowwolf" "feeds.conf.default"; then
-      echo "lede"
-      return 0
-    elif grep -q "immortalwrt" "feeds.conf.default"; then
-      echo "immortalwrt"
-      return 0
-    fi
-  fi
+  # # 方法4: 检查 feeds.conf.default 中的源
+  # if [[ -f "feeds.conf.default" ]]; then
+  #   if grep -q "coolsnowwolf" "feeds.conf.default"; then
+  #     echo "lede"
+  #     return 0
+  #   elif grep -q "immortalwrt" "feeds.conf.default"; then
+  #     echo "immortalwrt"
+  #     return 0
+  #   fi
+  # fi
 
   # 无法检测
   echo "unknown"
@@ -84,7 +84,7 @@ cp -f $GITHUB_WORKSPACE/images/background.jpg feeds/luci/themes/luci-theme-argon
 echo "当前工作流: $GITHUB_WORKFLOW"
 echo "源码仓库: ${SOURCE_REPO:-未设置}"
 echo "当前目录: $(pwd)"
-echo "环境变量 DEBUG:"
+echo "环境变量:"
 echo "  SOURCE_REPO='${SOURCE_REPO:-}'"
 echo "  REPO_URL='${REPO_URL:-}'"
 
