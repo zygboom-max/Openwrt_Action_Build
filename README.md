@@ -1,10 +1,10 @@
-# 🚀 OpenWrt 自动化构建项目
+# <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/rocket.svg" alt="" width="16" height="16"> OpenWrt 自动化构建项目
 
 <div align="center">
 
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/xiaobili/Openwrt_Action_Build/X86_64-Parallel-Immortal.yml?style=for-the-badge&logo=openwrt&label=workflow)](https://github.com/xiaobili/Openwrt_Action_Build/actions)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/xiaobili/Openwrt_Action_Build/X86_64-Parallel-Immortal.yml?style=for-the-badge&logo=openwrt&label=workflow)](https://github.com/xiaobili/OpenWrt_Action_Build/actions)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge&logo=github)](https://github.com/xiaobili/OpenWrt_Action_Build/blob/master/LICENSE)
-[![GitHub Release](https://img.shields.io/github/v/release/xiaobili/Openwrt_Action_Build?display_name=release&style=for-the-badge&logo=github)](https://github.com/xiaobili/Openwrt_Action_Build/releases/latest)
+[![GitHub Release](https://img.shields.io/github/v/release/xiaobili/OpenWrt_Action_Build?display_name=release&style=for-the-badge&logo=github)](https://github.com/xiaobili/OpenWrt_Action_Build/releases/latest)
 
 **一键编译 OpenWrt 固件** | **自动化构建流程** | **支持多版本源码**
 
@@ -12,49 +12,49 @@
 
 ---
 
-## ✨ 项目特性
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/syncthing.svg" alt="" width="16" height="16"> 项目特性
 
-- 🔄 **持续集成** - 集成 GitHub Actions 实现自动化构建流程
-- 📦 **多源码支持** - 支持 LEDE 和 ImmortalWrt 源码的自动编译
-- 🎯 **双重版本** - 提供完整版和迷你版两种固件构建选项
-- ⏰ **定时构建** - 支持定时构建和手动触发构建
-- 🧩 **丰富插件** - 包含多种常用插件和优化配置
-- 🎨 **主题美化** - 预装 Argon 主题并优化界面体验
-- ⚡ **并行构建** - 支持并行构建多个版本固件，提高效率
+- <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/syncthing.svg" alt="" width="16" height="16"> **持续集成** - 集成 GitHub Actions 实现自动化构建流程
+- <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/box.svg" alt="" width="16" height="16"> **多源码支持** - 支持 LEDE 和 ImmortalWrt 源码的自动编译
+- <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/target.svg" alt="" width="16" height="16"> **双重版本** - 提供完整版和迷你版两种固件构建选项
+- <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/clockify.svg" alt="" width="16" height="16"> **定时构建** - 支持定时构建和手动触发构建
+- <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/rocket.svg" alt="" width="16" height="16"> **丰富插件** - 包含多种常用插件和优化配置
+- <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/artstation.svg" alt="" width="16" height="16"> **主题美化** - 预装 Argon 主题并优化界面体验
+- <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/lightning.svg" alt="" width="16" height="16"> **并行构建** - 支持并行构建多个版本固件，提高效率
 
 ---
 
-## 📋 构建目标
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/todoist.svg" alt="" width="16" height="16"> 构建目标
 
 项目提供了以下几种构建工作流：
 
 | 类型                              | 描述                            | 特点                                              | 工作流文件                                                                     |
 | --------------------------------- | ------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 🖥️ **X86_64 Parallel LEDE**        | 基于 Lean's LEDE 源码的并行构建 | 同时构建完整版和精简版固件                        | [X86_64-Parallel-LEDE.yml](.github/workflows/X86_64-Parallel-LEDE.yml)         |
-| 🌐 **X86_64 Parallel ImmortalWrt** | 基于 ImmortalWrt 源码的并行构建 | 同时构建完整版和精简版固件，支持官方 OpenWrt 分支 | [X86_64-Parallel-Immortal.yml](.github/workflows/X86_64-Parallel-Immortal.yml) |
-| 🧹 **清理旧工作流**                | 定期清理过期的构建记录          | 自动清理过期的 GitHub Actions 记录                | [Delete-Old-Workflows.yml](.github/workflows/Delete-Old-Workflows.yml)         |
+| <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/screencastify.svg" alt="" width="16" height="16"> **X86_64 Parallel LEDE**        | 基于 Lean's LEDE 源码的并行构建 | 同时构建完整版和精简版固件                        | [X86_64-Parallel-LEDE.yml](.github/workflows/X86_64-Parallel-LEDE.yml)         |
+| <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/googlemaps.svg" alt="" width="16" height="16"> **X86_64 Parallel ImmortalWrt** | 基于 ImmortalWrt 源码的并行构建 | 同时构建完整版和精简版固件，支持官方 OpenWrt 分支 | [X86_64-Parallel-Immortal.yml](.github/workflows/X86_64-Parallel-Immortal.yml) |
+| <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/rocket.svg" alt="" width="16" height="16"> **清理旧工作流**                | 定期清理过期的构建记录          | 自动清理过期的 GitHub Actions 记录                | [Delete-Old-Workflows.yml](.github/workflows/Delete-Old-Workflows.yml)         |
 
 ---
 
-## 🧩 包含的插件和功能
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/rocket.svg" alt="" width="16" height="16"> 包含的插件和功能
 
-### 🔧 系统插件
+### <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/coggle.svg" alt="" width="16" height="16"> 系统插件
 - **OpenAppFilter** - 应用过滤
 - **Openlist** - 网盘挂载工具
 - **NetSpeedTest** - 网络速度测试
 - **PassWall** - 科学上网解决方案
 
-### 🌐 网络工具
+### <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/signal.svg" alt="" width="16" height="16"> 网络工具
 - **AdGuard Home** - 广告拦截
 - **MosDNS** - DNS 解析
 - **网速测试工具** - 网络速度检测
 
-### 🎨 界面优化
+### <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/artstation.svg" alt="" width="16" height="16"> 界面优化
 - **Argon 主题** - 带自定义背景图片
 - **Luci 界面优化** - 提升用户体验
 - **版本号显示** - 显示为编译日期格式
 
-### ⚡ 系统优化
+### <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/lightning.svg" alt="" width="16" height="16"> 系统优化
 - 自动设置默认 IP 地址
 - 优化的系统默认设置
 - 网络性能调优
@@ -62,7 +62,7 @@
 
 ---
 
-## ⚙️ 配置文件
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/coggle.svg" alt="" width="16" height="16"> 配置文件
 
 | 配置文件                       | 用途                   | 链接                                           |
 | ------------------------------ | ---------------------- | ---------------------------------------------- |
@@ -73,7 +73,7 @@
 
 ---
 
-## 🛠️ 自定义脚本
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/coggle.svg" alt="" width="16" height="16"> 自定义脚本
 
 ### [diy-feeds.sh](diy-feeds.sh)
 用于添加额外的 feeds 源，如 PassWall 插件源。
@@ -93,7 +93,7 @@
 
 ---
 
-## 🏗️ 构建流程
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/rocket.svg" alt="" width="16" height="16"> 构建流程
 
 1. **环境准备** - 检查服务器性能、释放磁盘空间、安装必要软件包
 2. **代码获取** - 从指定仓库和分支克隆 OpenWrt 源码
@@ -104,7 +104,7 @@
 
 ---
 
-## 🚀 使用方法
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/rocket.svg" alt="" width="16" height="16"> 使用方法
 
 ### 手动触发构建
 在 GitHub Actions 页面选择对应的工作流，点击 "Run workflow" 即可开始构建。
@@ -117,7 +117,7 @@
 
 ---
 
-## 🛡️ 环境要求
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/shieldsdotio.svg" alt="" width="16" height="16"> 环境要求
 
 | 组件     | 要求         | 备注                 |
 | -------- | ------------ | -------------------- |
@@ -128,7 +128,7 @@
 
 ---
 
-## 📦 Docker 构建
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/box.svg" alt="" width="16" height="16"> Docker 构建
 
 项目还提供 Docker 镜像构建支持：
 - 使用 [Dockerfile](docker/Dockerfile) 和 [buildImageX.sh](docker/buildImageX.sh) 脚本
@@ -137,7 +137,7 @@
 
 ---
 
-## 📝 注意事项
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/notion.svg" alt="" width="16" height="16"> 注意事项
 
 ⚠️ **编译过程中需要大量磁盘空间和计算资源**  
 ⚠️ **定期清理旧的构建记录以节省存储空间**  
@@ -148,12 +148,12 @@
 
 ---
 
-## 🤝 贡献
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/handshake.svg" alt="" width="16" height="16"> 贡献
 
 欢迎提交 Issue 和 Pull Request 来帮助改进此项目！
 
 ---
 
-## 📜 许可证
+## <img src="https://cdn.jsdelivr.net/npm/simple-icons@16/icons/scrollreveal.svg" alt="" width="16" height="16"> 许可证
 
 本项目遵循 [MIT License](LICENSE)，仅供学习交流使用。
